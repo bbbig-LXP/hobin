@@ -10,12 +10,12 @@ public class ConnectionTest {
 
         try (Connection conn = DBConnectionManager.getConnection()) {
             if (conn != null) {
-                System.out.println("✅ 축하합니다! DB 연결에 성공했습니다.");
-                System.out.println("연결된 DB 정보: " + conn.getMetaData().getDriverName());
+                System.out.println("DB 연결에 성공했습니다.");
+                System.out.println("연결된 DB : " + conn.getMetaData().getDriverName());
             }
         } catch (SQLException e) {
-            System.err.println("❌ 연결 실패!");
-            System.err.println("에러 이유: " + e.getMessage());
+            System.err.println("연결 실패");
+            System.err.println("에러 : " + e.getMessage());
             e.printStackTrace();
         }
     }
