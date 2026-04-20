@@ -11,11 +11,10 @@ public class CourseSection {
     private LocalDateTime updatedAt;
 
     public CourseSection(Long courseId, String title) {
-        if (courseId == null) {
+        if (courseId == null || courseId <= 0) {
             throw new IllegalArgumentException("강좌 ID는 필수입니다");
         }
         titleCheck(title);
-        this.id = null;
         this.courseId = courseId;
         this.title = title;
         this.createdAt = LocalDateTime.now();

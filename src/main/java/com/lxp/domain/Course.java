@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Course {
 
-    private final Long id;
+    private Long id;
     private String title;
     private String description;
     private final Long instructorId;
@@ -17,10 +17,12 @@ public class Course {
     public Course(String title, String description, Long instructorId, CourseLevel courseLevel) {
         titleCheck(title);
         descriptionCheck(description);
-        if (instructorId == null) {
+        if (instructorId == null || instructorId <= 0) {
             throw new IllegalArgumentException("강사 ID는 필수입니다");
         }
-        this.id = null;
+        if (courseLevel == null) {
+            throw new IllegalArgumentException("코스 레벨은 필수입니다");
+        }
         this.title = title;
         this.description = description;
         this.instructorId = instructorId;
@@ -43,7 +45,7 @@ public class Course {
 
     private void descriptionCheck(String description) {
         if (description == null || description.isBlank()) {
-            throw new IllegalArgumentException("내용은 비울 수 업습니다");
+            throw new IllegalArgumentException("내용은 비울 수 없습니다");
         }
         if (description.length() > 200) {
             throw new IllegalArgumentException("내용은 200자 이하여야 합니다");

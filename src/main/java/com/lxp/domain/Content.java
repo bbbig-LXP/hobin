@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Content {
 
-    private final Long id;
+    private Long id;
     private final Long sectionId;
     private String title;
     private final ContentType contentType;
@@ -15,11 +15,9 @@ public class Content {
 
     public Content(Long sectionId, String title, ContentType contentType,
         ContentStatus contentStatus) {
-        if (sectionId == null) {
+        if (sectionId == null || sectionId <= 0) {
             throw new IllegalArgumentException("섹션 ID 필수입니다");
         }
-        titleCheck(title);
-        this.id = null;
         this.sectionId = sectionId;
         this.title = title;
         this.contentType = contentType;

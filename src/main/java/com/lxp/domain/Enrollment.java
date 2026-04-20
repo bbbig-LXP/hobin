@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Enrollment {
 
-    private final Long id;
+    private Long id;
     private final Long courseId;
     private final Long userId;
     private LocalDateTime completedAt;
@@ -18,7 +18,6 @@ public class Enrollment {
         if (userId == null || userId <= 0) {
             throw new IllegalArgumentException("유저 ID 는 비우거나 중복될 수 없습니다");
         }
-        this.id = null;
         this.courseId = courseId;
         this.userId = userId;
         this.completedAt = null;
@@ -30,6 +29,8 @@ public class Enrollment {
         if (completedAt != null) {
             throw new IllegalArgumentException("이미 완료된 수강입니다");
         }
+        this.completedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Long getId() {
