@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 public class Content {
 
     private Long id;
-    private final Long sectionId;
+    private Long sectionId;
     private String title;
-    private final ContentType contentType;
+    private ContentType contentType;
     private ContentStatus contentStatus;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;

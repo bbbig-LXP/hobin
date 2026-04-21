@@ -7,12 +7,26 @@ public class Course {
     private Long id;
     private String title;
     private String description;
-    private final Long instructorId;
+    private Long instructorId;
     private CourseStatus status;
     private CourseLevel courseLevel;
-    private final LocalDateTime publishedAt;
-    private final LocalDateTime createdAt;
+    private LocalDateTime publishedAt;
+
+    public void setStatus(CourseStatus status) {
+        this.status = status;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
+    public Course(String title, String description, CourseLevel courseLevel) {
+        this(title,description,1L,courseLevel);
+    }
 
     public Course(String title, String description, Long instructorId, CourseLevel courseLevel) {
         titleCheck(title);
@@ -32,6 +46,8 @@ public class Course {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
+
+
 
     private void titleCheck(String title) {
         if (title == null || title.isBlank()) {

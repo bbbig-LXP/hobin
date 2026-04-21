@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public class Enrollment {
 
     private Long id;
-    private final Long courseId;
-    private final Long userId;
+    private Long courseId;
+    private Long userId;
     private LocalDateTime completedAt;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -25,8 +25,8 @@ public class Enrollment {
         this.updatedAt = LocalDateTime.now();
     }
 
-    private void complete(LocalDateTime completedAt) {
-        if (completedAt != null) {
+    private void complete() {
+        if (this.completedAt != null) {
             throw new IllegalArgumentException("이미 완료된 수강입니다");
         }
         this.completedAt = LocalDateTime.now();

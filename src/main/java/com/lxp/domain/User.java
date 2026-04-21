@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class User {
 
-    private final Long id;
+    private Long id;
     private String name;
     private UsersType type;
     private final LocalDateTime createdAt;
