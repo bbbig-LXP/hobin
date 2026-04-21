@@ -27,22 +27,21 @@ public class JdbcCourseRepository implements CourseRepository{
             try(ResultSet rs = pstmt.getGeneratedKeys()){
                 if(rs.next()){
                     Long id = rs.getLong(1);
-                    course.setId(id);
-                    System.out.println("로그 : DB 저장 성공" + id);
+                    return new Course(
+                            id,
+                            course.getTitle(),
+                            course.getDescription(),
+                            course.getCourseLevel(),
+                            course.getStatus()
 
+                    );
                 }
-
             }
-
-
         }catch (SQLException e){
             System.err.println("로그 저장 실패");
             throw new RuntimeException(e);
         }
-
         return course;
-
-
     }
 
     @Override
@@ -56,16 +55,14 @@ public class JdbcCourseRepository implements CourseRepository{
 
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
-                    Course course = new Course(
+                    return Optional.of(new Course(
+                            rs.getLong("id"),
                             rs.getString("title"),
                             rs.getString("description"),
-                            Course.CourseLevel.valueOf(rs.getString("level"))
+                            Course.CourseLevel.valueOf(rs.getString("level")),
+                            Course.CourseStatus.valueOf(rs.getString("status"))
 
-                    );
-                    course.setId(rs.getLong("id"));
-                    course.setStatus(Course.CourseStatus.valueOf(rs.getString("status")));
-
-                    return Optional.of(course);
+                    ));
                 }
 
             }

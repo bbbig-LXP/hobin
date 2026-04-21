@@ -12,20 +12,22 @@ public class Course {
     private CourseLevel courseLevel;
     private LocalDateTime publishedAt;
 
-    public void setStatus(CourseStatus status) {
-        this.status = status;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
 
     public Course(String title, String description, CourseLevel courseLevel) {
         this(title,description,1L,courseLevel);
+    }
+
+    public Course(Long id, String title, String description, CourseLevel courseLevel, CourseStatus status) {
+        titleCheck(title);
+        descriptionCheck(description);
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.courseLevel = courseLevel;
+        this.status = status;
     }
 
     public Course(String title, String description, Long instructorId, CourseLevel courseLevel) {
