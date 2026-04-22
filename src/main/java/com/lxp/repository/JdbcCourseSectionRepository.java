@@ -52,6 +52,9 @@ public class JdbcCourseSectionRepository implements CourseSectionRepository {
 
     @Override
     public Optional<CourseSection> findById(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("조회할 ID는 1 이상이여야 합니다");
+        }
         String sql = "SELECT * FROM course_sections WHERE id = ? AND status != 'ARCHIVED' ";
 
         try (Connection conn = DBConnectionManager.getConnection();
@@ -82,6 +85,9 @@ public class JdbcCourseSectionRepository implements CourseSectionRepository {
 
     @Override
     public List<CourseSection> findAll(Long courseId) {
+        if (courseId == null || courseId <= 0) {
+            throw new IllegalArgumentException("조회할 ID는 1 이상이여야 합니다");
+        }
         String sql = "SELECT * FROM course_sections WHERE course_id = ? AND status != 'ARCHIVED' ";
 
         List<CourseSection> sections = new ArrayList<>();
@@ -141,7 +147,10 @@ public class JdbcCourseSectionRepository implements CourseSectionRepository {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean softDelete(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("삭제할 ID는 1 이상이여야 합니다");
+        }
         String sql = "UPDATE course_sections SET status = 'ARCHIVED' WHERE id = ? AND status != 'ARCHIVED'";
 
         try (Connection conn = DBConnectionManager.getConnection();

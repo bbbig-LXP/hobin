@@ -14,7 +14,7 @@ public interface ContentRepository {
 
     void update(Content content);
 
-    boolean deleteById(Long id);
+    boolean softDelete(Long id);
 
 
 }

@@ -1,5 +1,6 @@
 package com.lxp.domain;
 
+import com.lxp.domain.CourseSection.CourseSectionStatus;
 import java.time.LocalDateTime;
 
 public class Content {
@@ -81,4 +82,14 @@ public class Content {
         VIDEO,
         DOCUMENT
     }
+
+
+    public void hidden() {
+        if (this.contentStatus != ContentStatus.NORMAL) {
+            throw new IllegalArgumentException("NORMAL 상태만 가능");
+        }
+        this.contentStatus = ContentStatus.HIDDEN;
+    }
+
+
 }
