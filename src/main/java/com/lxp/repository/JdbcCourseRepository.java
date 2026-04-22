@@ -38,7 +38,7 @@ public class JdbcCourseRepository implements CourseRepository {
                         course.getInstructorId(),
                         course.getStatus(),
                         course.getCourseLevel(),
-                        LocalDateTime.now(),
+                        course.getPublishedAt(),
                         LocalDateTime.now(),
                         LocalDateTime.now()
 
@@ -55,6 +55,9 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Optional<Course> findById(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("조회할 ID는 1 이상이여야 합니다");
+        }
         String sql = "SELECT * FROM courses WHERE id = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
@@ -68,7 +71,7 @@ public class JdbcCourseRepository implements CourseRepository {
                         rs.getLong("id"),
                         rs.getString("title"),
                         rs.getString("description"),
-                        rs.getLong("course_id"),
+                        rs.getLong("instructor_id"),
                         Course.CourseStatus.valueOf(rs.getString("status")),
                         Course.CourseLevel.valueOf(rs.getString("level")),
                         rs.getTimestamp("published_at").toLocalDateTime(),
@@ -115,7 +118,10 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean softDelete(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("삭제할 ID는 1 이상이여야 합니다");
+        }
         String sql = "UPDATE courses SET status = 'ARCHIVED' WHERE id = ? AND status != 'ARCHIVED' ";
 
         try (Connection conn = DBConnectionManager.getConnection();

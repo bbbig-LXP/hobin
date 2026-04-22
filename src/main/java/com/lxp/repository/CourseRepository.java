@@ -12,6 +12,6 @@ public interface CourseRepository {
 
     void update(Course course);
 
-    boolean deleteById(Long id);
+    boolean softDelete(Long id);
 
 }

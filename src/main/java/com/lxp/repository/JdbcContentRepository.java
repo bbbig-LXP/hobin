@@ -55,6 +55,9 @@ public class JdbcContentRepository implements ContentRepository {
 
     @Override
     public Optional<Content> findById(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("조회할 ID는 1 이상이여야 합니다");
+        }
         String sql = "SELECT * FROM contents WHERE id = ? AND status != 'HIDDEN'";
 
         try (Connection conn = DBConnectionManager.getConnection();
@@ -86,6 +89,9 @@ public class JdbcContentRepository implements ContentRepository {
 
     @Override
     public List<Content> findAll(Long sectionId) {
+        if (sectionId == null || sectionId <= 0) {
+            throw new IllegalArgumentException("조회할 ID는 1 이상이여야 합니다");
+        }
         String sql = "SELECT * FROM contents WHERE section_id = ? AND status != 'HIDDEN'";
         List<Content> contents = new ArrayList<>();
 
@@ -143,7 +149,10 @@ public class JdbcContentRepository implements ContentRepository {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean softDelete(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("삭제할 ID는 1 이상이여야 합니다");
+        }
         String sql = "UPDATE contents SET status = 'HIDDEN' WHERE id = ? AND status != 'HIDDEN'";
 
         try (Connection conn = DBConnectionManager.getConnection();

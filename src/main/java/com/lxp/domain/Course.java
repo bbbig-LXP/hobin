@@ -45,7 +45,7 @@ public class Course {
         this.description = description;
         this.instructorId = instructorId;
         this.courseLevel = courseLevel;
-        
+
         this.status = CourseStatus.DRAFT;
         this.publishedAt = null;
         this.createdAt = LocalDateTime.now();
@@ -122,5 +122,40 @@ public class Course {
         ADVANCED
     }
 
+    public void publish() {
+        if (this.status != CourseStatus.DRAFT) {
+            throw new IllegalArgumentException("DRAFT 상태만 가능");
+        }
+        this.status = CourseStatus.PUBLISHED;
+        this.publishedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void archived() {
+        if (this.status != CourseStatus.PUBLISHED) {
+            throw new IllegalArgumentException("PUBLISHED 상태만 보관 가능");
+        }
+        this.status = CourseStatus.ARCHIVED;
+        this.publishedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateShield(String title, String description, CourseLevel level) {
+        if (this.status == CourseStatus.PUBLISHED) {
+            throw new IllegalArgumentException("발행된 강좌는 수정 불가");
+        }
+        titleCheck(title);
+        descriptionCheck(description);
+        if (level == null) {
+            throw new IllegalArgumentException("코스 레벨 필수");
+        }
+        this.title = title;
+        this.description = description;
+        this.courseLevel = level;
+        this.updatedAt = LocalDateTime.now();
+
+    }
+
 
 }
+

@@ -70,4 +70,29 @@ public class CourseSection {
         PUBLISHED,
         ARCHIVED,
     }
+
+    public void publish() {
+        if (this.status != CourseSectionStatus.DRAFT) {
+            throw new IllegalArgumentException("DRAFT 상태만 가능");
+        }
+        this.status = CourseSectionStatus.PUBLISHED;
+    }
+
+    public void archived() {
+        if (this.status != CourseSectionStatus.PUBLISHED) {
+            throw new IllegalArgumentException("PUBLISHED 상태만 보관 가능");
+        }
+        this.status = CourseSectionStatus.ARCHIVED;
+    }
+
+    public void updateShield(String title) {
+        if (this.status == CourseSectionStatus.ARCHIVED) {
+            throw new IllegalArgumentException("보관된 섹션 수정 불가");
+        }
+        titleCheck(title);
+        this.title = title;
+
+    }
+
+
 }
