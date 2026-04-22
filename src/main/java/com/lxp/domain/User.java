@@ -10,6 +10,7 @@ public class User {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+
     public User(String name, UsersType type) {
 
         nameCheck(name);
