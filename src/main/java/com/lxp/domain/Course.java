@@ -16,18 +16,20 @@ public class Course {
     private LocalDateTime updatedAt;
 
 
-    public Course(String title, String description, CourseLevel courseLevel) {
-        this(title,description,1L,courseLevel);
-    }
-
-    public Course(Long id, String title, String description, CourseLevel courseLevel, CourseStatus status) {
+    public Course(Long id, String title, String description, Long instructorId, CourseStatus status,
+        CourseLevel courseLevel, LocalDateTime publishedAt, LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
         titleCheck(title);
         descriptionCheck(description);
         this.id = id;
         this.title = title;
         this.description = description;
-        this.courseLevel = courseLevel;
+        this.instructorId = instructorId;
         this.status = status;
+        this.courseLevel = courseLevel;
+        this.publishedAt = publishedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Course(String title, String description, Long instructorId, CourseLevel courseLevel) {
@@ -43,12 +45,12 @@ public class Course {
         this.description = description;
         this.instructorId = instructorId;
         this.courseLevel = courseLevel;
+        
         this.status = CourseStatus.DRAFT;
         this.publishedAt = null;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
-
 
 
     private void titleCheck(String title) {

@@ -29,8 +29,8 @@ public class Content {
         this.title = title;
         this.contentType = contentType;
         this.contentStatus = contentStatus;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
 

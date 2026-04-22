@@ -22,6 +22,7 @@ public class CourseSection {
         if (courseId == null || courseId <= 0) {
             throw new IllegalArgumentException("강좌 ID는 필수입니다");
         }
+        titleCheck(title);
         this.id = id;
         this.courseId = courseId;
         this.title = title;

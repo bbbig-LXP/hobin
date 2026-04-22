@@ -41,12 +41,13 @@ public class JdbcCourseSectionRepository implements CourseSectionRepository {
                         LocalDateTime.now()
                     );
 
+                } else {
+                    throw new SQLException("생성되었으나 ID를 가져오지 못함");
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("강의 섹션 저장 에러", e);
         }
-        return courseSection;
     }
 
     @Override
@@ -116,6 +117,9 @@ public class JdbcCourseSectionRepository implements CourseSectionRepository {
 
     @Override
     public void update(CourseSection courseSection) {
+        if (courseSection == null || courseSection.getId() == null) {
+            throw new IllegalArgumentException("수정 실패 아직 저장되지 않은 강좌 입니다(ID null");
+        }
         String sql = "UPDATE course_sections SET title = ?, status = ? , updated_at = NOW() WHERE id = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();

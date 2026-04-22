@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class JdbcCourseRepository implements CourseRepository {
@@ -14,7 +15,7 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Course save(Course course) {
-        String sql = "INSERT INTO courses (title, description, status, level) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO courses (title, description, status, level , instructor_id) VALUES(?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -23,6 +24,7 @@ public class JdbcCourseRepository implements CourseRepository {
             pstmt.setString(2, course.getDescription());
             pstmt.setString(3, course.getStatus().name());
             pstmt.setString(4, course.getCourseLevel().name());
+            pstmt.setLong(5, course.getInstructorId());
 
             pstmt.executeUpdate();
 
@@ -33,17 +35,22 @@ public class JdbcCourseRepository implements CourseRepository {
                         id,
                         course.getTitle(),
                         course.getDescription(),
+                        course.getInstructorId(),
+                        course.getStatus(),
                         course.getCourseLevel(),
-                        course.getStatus()
+                        LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
 
                     );
+                } else {
+                    throw new SQLException("저장 했으나 ID를 가져오지 못함");
                 }
             }
         } catch (SQLException e) {
             System.err.println("로그 저장 실패");
             throw new RuntimeException(e);
         }
-        return course;
     }
 
     @Override
@@ -61,9 +68,12 @@ public class JdbcCourseRepository implements CourseRepository {
                         rs.getLong("id"),
                         rs.getString("title"),
                         rs.getString("description"),
+                        rs.getLong("course_id"),
+                        Course.CourseStatus.valueOf(rs.getString("status")),
                         Course.CourseLevel.valueOf(rs.getString("level")),
-                        Course.CourseStatus.valueOf(rs.getString("status"))
-
+                        rs.getTimestamp("published_at").toLocalDateTime(),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime()
                     ));
                 }
 
@@ -78,6 +88,9 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public void update(Course course) {
+        if (course == null || course.getId() == null) {
+            throw new IllegalArgumentException("수정 실패 아직 저장되지 않은 강좌 입니다(ID null");
+        }
         String sql = "UPDATE courses SET title =? , description = ? , status = ? ,level = ?, updated_at = NOW() WHERE id = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();

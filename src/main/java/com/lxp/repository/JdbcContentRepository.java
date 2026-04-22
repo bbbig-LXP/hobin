@@ -43,12 +43,13 @@ public class JdbcContentRepository implements ContentRepository {
                         LocalDateTime.now()
 
                     );
+                } else {
+                    throw new SQLException("콘텐츠는 저장 했으나 생성된 ID를 가져오지 못함");
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("콘텐츠 저장 에러", e);
         }
-        return content;
 
     }
 
@@ -68,7 +69,7 @@ public class JdbcContentRepository implements ContentRepository {
                         rs.getLong("section_id"),
                         rs.getString("title"),
                         ContentType.valueOf(rs.getString("content_type")),
-                        ContentStatus.valueOf(rs.getString("Status")),
+                        ContentStatus.valueOf(rs.getString("status")),
                         rs.getTimestamp("created_at").toLocalDateTime(),
                         rs.getTimestamp("updated_at").toLocalDateTime()
                     );
@@ -116,6 +117,9 @@ public class JdbcContentRepository implements ContentRepository {
 
     @Override
     public void update(Content content) {
+        if (content == null || content.getId() == null) {
+            throw new IllegalArgumentException("수정 실패 아직 저장되지 않은 강좌 입니다(ID null");
+        }
         String sql = "UPDATE contents SET title = ?, content_type = ?, status = ? , updated_at = NOW() WHERE id = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
