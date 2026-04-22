@@ -5,25 +5,32 @@ import java.time.LocalDateTime;
 public class Content {
 
     private Long id;
-    private final Long sectionId;
+    private Long sectionId;
     private String title;
-    private final ContentType contentType;
+    private ContentType contentType;
     private ContentStatus contentStatus;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
 
-    public Content(Long sectionId, String title, ContentType contentType,
-        ContentStatus contentStatus) {
+    public Content(Long sectionId, String title, ContentType contentType) {
+        this(null, sectionId, title, contentType, ContentStatus.NORMAL, LocalDateTime.now(),
+            LocalDateTime.now());
+    }
+
+    public Content(Long id, Long sectionId, String title, ContentType contentType,
+        ContentStatus contentStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (sectionId == null || sectionId <= 0) {
             throw new IllegalArgumentException("섹션 ID 필수입니다");
         }
+        titleCheck(title);
+        this.id = id;
         this.sectionId = sectionId;
         this.title = title;
         this.contentType = contentType;
         this.contentStatus = contentStatus;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
 

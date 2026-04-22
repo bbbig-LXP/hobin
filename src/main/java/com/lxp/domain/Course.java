@@ -7,12 +7,30 @@ public class Course {
     private Long id;
     private String title;
     private String description;
-    private final Long instructorId;
+    private Long instructorId;
     private CourseStatus status;
     private CourseLevel courseLevel;
-    private final LocalDateTime publishedAt;
-    private final LocalDateTime createdAt;
+    private LocalDateTime publishedAt;
+
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
+    public Course(Long id, String title, String description, Long instructorId, CourseStatus status,
+        CourseLevel courseLevel, LocalDateTime publishedAt, LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
+        titleCheck(title);
+        descriptionCheck(description);
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.instructorId = instructorId;
+        this.status = status;
+        this.courseLevel = courseLevel;
+        this.publishedAt = publishedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     public Course(String title, String description, Long instructorId, CourseLevel courseLevel) {
         titleCheck(title);
@@ -27,11 +45,13 @@ public class Course {
         this.description = description;
         this.instructorId = instructorId;
         this.courseLevel = courseLevel;
+        
         this.status = CourseStatus.DRAFT;
         this.publishedAt = null;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
+
 
     private void titleCheck(String title) {
         if (title == null || title.isBlank()) {
