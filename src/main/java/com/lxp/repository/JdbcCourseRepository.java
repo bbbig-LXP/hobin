@@ -67,6 +67,10 @@ public class JdbcCourseRepository implements CourseRepository {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
+                    java.sql.Timestamp publishedAtTs = rs.getTimestamp("published_at");
+                    java.sql.Timestamp createdAtTs = rs.getTimestamp("created_at");
+                    java.sql.Timestamp updatedAtTs = rs.getTimestamp("updated_at");
+
                     return Optional.of(new Course(
                         rs.getLong("id"),
                         rs.getString("title"),
@@ -74,9 +78,9 @@ public class JdbcCourseRepository implements CourseRepository {
                         rs.getLong("instructor_id"),
                         Course.CourseStatus.valueOf(rs.getString("status")),
                         Course.CourseLevel.valueOf(rs.getString("level")),
-                        rs.getTimestamp("published_at").toLocalDateTime(),
-                        rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getTimestamp("updated_at").toLocalDateTime()
+                        publishedAtTs != null ? publishedAtTs.toLocalDateTime() : null,
+                        createdAtTs != null ? createdAtTs.toLocalDateTime() : null,
+                        updatedAtTs != null ? updatedAtTs.toLocalDateTime() : null
                     ));
                 }
 
@@ -94,7 +98,7 @@ public class JdbcCourseRepository implements CourseRepository {
         if (course == null || course.getId() == null) {
             throw new IllegalArgumentException("수정 실패 아직 저장되지 않은 강좌 입니다(ID null");
         }
-        String sql = "UPDATE courses SET title =? , description = ? , status = ? ,level = ?, updated_at = NOW() WHERE id = ?";
+        String sql = "UPDATE courses SET title =? , description = ? , status = ? ,level = ?,  published_at = ? ,updated_at = NOW() WHERE id = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -103,7 +107,9 @@ public class JdbcCourseRepository implements CourseRepository {
             pstmt.setString(2, course.getDescription());
             pstmt.setString(3, course.getStatus().name());
             pstmt.setString(4, course.getCourseLevel().name());
-            pstmt.setLong(5, course.getId());
+            pstmt.setTimestamp(5, course.getPublishedAt() != null ? java.sql.Timestamp.valueOf(
+                course.getPublishedAt()) : null);
+            pstmt.setLong(6, course.getId());
 
             int rows = pstmt.executeUpdate();
             if (rows == 0) {
