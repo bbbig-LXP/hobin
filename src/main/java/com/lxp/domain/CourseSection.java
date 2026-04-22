@@ -89,6 +89,7 @@ public class CourseSection {
         if (this.status == CourseSectionStatus.ARCHIVED) {
             throw new IllegalArgumentException("보관된 섹션 수정 불가");
         }
+        titleCheck(title);
         this.title = title;
 
     }

@@ -38,7 +38,7 @@ public class JdbcCourseRepository implements CourseRepository {
                         course.getInstructorId(),
                         course.getStatus(),
                         course.getCourseLevel(),
-                        LocalDateTime.now(),
+                        course.getPublishedAt(),
                         LocalDateTime.now(),
                         LocalDateTime.now()
 
@@ -71,7 +71,7 @@ public class JdbcCourseRepository implements CourseRepository {
                         rs.getLong("id"),
                         rs.getString("title"),
                         rs.getString("description"),
-                        rs.getLong("course_id"),
+                        rs.getLong("instructor_id"),
                         Course.CourseStatus.valueOf(rs.getString("status")),
                         Course.CourseLevel.valueOf(rs.getString("level")),
                         rs.getTimestamp("published_at").toLocalDateTime(),

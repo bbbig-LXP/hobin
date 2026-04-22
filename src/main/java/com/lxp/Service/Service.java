@@ -136,7 +136,7 @@ public class Service {
             throw new IllegalArgumentException("운영 종료된 강좌는 변경할 수 없습니다");
         }
         courseS.updateShield(courseSection.getTitle());
-        courseSectionRepository.update(courseSection);
+        courseSectionRepository.update(courseS);
     }
 
     public void updateContent(Content content) {
