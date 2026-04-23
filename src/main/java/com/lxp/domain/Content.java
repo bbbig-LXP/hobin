@@ -1,6 +1,5 @@
 package com.lxp.domain;
 
-import com.lxp.domain.CourseSection.CourseSectionStatus;
 import java.time.LocalDateTime;
 
 public class Content {
@@ -92,4 +91,16 @@ public class Content {
     }
 
 
+    @Override
+    public String toString() {
+        return "Content{" +
+            "id=" + id +
+            ", sectionId=" + sectionId +
+            ", title='" + title + '\'' +
+            ", contentType=" + contentType +
+            ", contentStatus=" + contentStatus +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
+    }
 }

@@ -122,6 +122,21 @@ public class Course {
         ADVANCED
     }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", description='" + description + '\'' +
+            ", instructorId=" + instructorId +
+            ", status=" + status +
+            ", courseLevel=" + courseLevel +
+            ", publishedAt=" + publishedAt +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
+    }
+
     public void publish() {
         if (this.status != CourseStatus.DRAFT) {
             throw new IllegalArgumentException("DRAFT 상태만 가능");

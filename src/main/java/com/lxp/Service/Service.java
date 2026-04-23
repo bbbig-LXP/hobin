@@ -48,7 +48,6 @@ public class Service {
     }
 
     // 여기까지가 생성 저장
-
     public Course readCourse(Long courseId) {
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new IllegalArgumentException(courseId + "강좌를 찾을 수 없음"));
@@ -169,4 +168,5 @@ public class Service {
     }
 
     // 여기까지가 삭제(소프트)
+
 }

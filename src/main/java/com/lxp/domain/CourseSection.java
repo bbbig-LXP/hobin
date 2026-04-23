@@ -94,5 +94,15 @@ public class CourseSection {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "CourseSection{" +
+            "id=" + id +
+            ", courseId=" + courseId +
+            ", title='" + title + '\'' +
+            ", status=" + status +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
+    }
 }
