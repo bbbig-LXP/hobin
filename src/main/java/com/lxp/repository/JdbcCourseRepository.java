@@ -48,6 +48,7 @@ public class JdbcCourseRepository implements CourseRepository {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println("로그 저장 실패");
             throw new RuntimeException(e);
         }

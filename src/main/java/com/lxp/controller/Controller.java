@@ -35,7 +35,7 @@ public class Controller {
 
             switch (menu) {
                 case "1":
-                    System.out.println("1.생성 | 2.조회 | 3.업데이트 | 4.삭제");
+                    System.out.println("1.생성 | 2.조회 | 3.업데이트 | 4.보관 |5.삭제");
                     String courseMenu = sc.nextLine();
                     switch (courseMenu) {
                         case "1":
@@ -47,8 +47,8 @@ public class Controller {
                                 String description = sc.nextLine();
                                 System.out.print("강사 id(숫자)를 입력해주세요 : ");
                                 Long instructorId = Long.parseLong(sc.nextLine());
-                                System.out.println(" 강좌 레벨을 입력해주세요 ");
-                                System.out.print("1 .BEGINNER 2.INTERMEDIATE 3.ADVANCED : ");
+                                System.out.println("강좌 레벨을 입력해주세요 ");
+                                System.out.print("1.BEGINNER 2.INTERMEDIATE 3.ADVANCED : ");
                                 int levelInput = Integer.parseInt(sc.nextLine());
                                 CourseLevel courseLevel;
                                 switch (levelInput) {
@@ -64,19 +64,43 @@ public class Controller {
                                     default:
                                         System.out.println("잘못된 번호입니다 기본 값인 BEGINNER로 설정됩니다.");
                                         courseLevel = CourseLevel.BEGINNER;
-
                                 }
-
-                                service.createCourse(title, description, instructorId, courseLevel);
-                                System.out.println("저장이 완료 되었습니다");
+                                Course savedCourse = service.createCourse(title, description,
+                                    instructorId, courseLevel);
+                                System.out.println("강좌 생성 완료 강좌 섹션은 최소 1개 이상 있어야 합니다.");
+                                System.out.println("섹션을 생성합니다");
+                                System.out.print("타이틀을 입력해주세요 : ");
+                                String sectionTitle = sc.nextLine();
+                                CourseSection savedSection = service.createCourseSection(
+                                    savedCourse.getId(), sectionTitle);
+                                System.out.println("섹션 생성 완료 콘텐츠를 생성합니다");
+                                System.out.print("콘텐츠 제목을 입력해주세요 : ");
+                                String contentTitle = sc.nextLine();
+                                System.out.println("콘텐츠의 종류를 선택해 주세요");
+                                System.out.print("1.VIDEO  2.DOCUMENT : ");
+                                int contentTypeChoice = Integer.parseInt(sc.nextLine());
+                                ContentType contentUpdate;
+                                switch (contentTypeChoice) {
+                                    case 1:
+                                        contentUpdate = ContentType.VIDEO;
+                                        break;
+                                    case 2:
+                                        contentUpdate = ContentType.DOCUMENT;
+                                        break;
+                                    default:
+                                        System.out.println("잘못된 번호입니다. 기본값인 VIDEO로 설정됩니다.");
+                                        contentUpdate = ContentType.VIDEO;
+                                }
+                                service.createContent(savedSection.getId(), contentTitle,
+                                    contentUpdate);
+                                System.out.println("강좌 + 섹션 + 콘텐츠 세트 저장이 끝났습니다!");
                             } catch (NumberFormatException e) {
-                                System.out.println("ID는 숫자만 가능");
+                                System.out.println("ID나 번호는 숫자만 가능합니다.");
                             } catch (IllegalArgumentException e) {
                                 System.out.println("경고 : " + e.getMessage());
                             } catch (Exception e) {
-                                System.out.println("에러");
+                                System.out.println("에러가 발생했습니다: " + e.getMessage());
                             }
-
                             break;
                         case "2":
                             try {
@@ -253,6 +277,7 @@ public class Controller {
                                 String title = sc.nextLine();
                                 System.out.print("id(숫자)를 입력해주세요 : ");
                                 Long sectionId = Long.parseLong(sc.nextLine());
+                                System.out.println("콘텐츠의 종류를 선택해주세요");
                                 System.out.print("1.VIDEO  2.DOCUMENT : ");
                                 int contentTypeChoice = Integer.parseInt(sc.nextLine());
                                 ContentType contentUpdate;
@@ -355,6 +380,21 @@ public class Controller {
                             }
                             break;
                         case "4":
+                            try {
+                                System.out.println("강좌를 보관합니다");
+                                System.out.println("보관할 강좌 아이디를 입력해주세요");
+                                Long archivedId = Long.parseLong(sc.nextLine());
+                                service.archiveCourse(archivedId);
+                                System.out.println("강좌를 보관했습니다");
+                            } catch (NumberFormatException e) {
+                                System.out.println("ID는 숫자만 가능");
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("경고 : " + e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println("에러");
+                            }
+                            break;
+                        case "5":
                             try {
                                 System.out.println("콘텐츠를 삭제합니다");
                                 System.out.print("삭제할 콘텐츠 ID(숫자)를 입력해주세요 : ");
