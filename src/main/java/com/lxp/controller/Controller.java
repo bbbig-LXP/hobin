@@ -45,8 +45,8 @@ public class Controller {
                                 String title = sc.nextLine();
                                 System.out.print("내용을 입력해주세요 : ");
                                 String description = sc.nextLine();
-                                System.out.print("id(숫자)를 입력해주세요 : ");
-                                Long courseId = Long.parseLong(sc.nextLine());
+                                System.out.print("강사 id(숫자)를 입력해주세요 : ");
+                                Long instructorId = Long.parseLong(sc.nextLine());
                                 System.out.println(" 강좌 레벨을 입력해주세요 ");
                                 System.out.print("1 .BEGINNER 2.INTERMEDIATE 3.ADVANCED : ");
                                 int levelInput = Integer.parseInt(sc.nextLine());
@@ -67,7 +67,7 @@ public class Controller {
 
                                 }
 
-                                service.createCourse(title, description, courseId, courseLevel);
+                                service.createCourse(title, description, instructorId, courseLevel);
                                 System.out.println("저장이 완료 되었습니다");
                             } catch (NumberFormatException e) {
                                 System.out.println("ID는 숫자만 가능");
@@ -211,7 +211,8 @@ public class Controller {
                                 Long updateId = Long.parseLong(sc.nextLine());
                                 System.out.print("바꿀 타이틀을 입력해주세요 : ");
                                 String updateTitle = sc.nextLine();
-                                CourseSection updateData = new CourseSection(updateId, updateTitle);
+                                CourseSection updateData = service.readCourseSection(updateId);
+                                updateData.updateShield(updateTitle);
                                 service.updateCourseSection(updateData);
                                 System.out.println("변경이 완료되었습니다");
 
@@ -333,8 +334,16 @@ public class Controller {
                                         contentUpdate = ContentType.VIDEO;
                                         break;
                                 }
-                                Content updateData = new Content(updateId, updateTitle,
-                                    contentUpdate);
+                                Content original = service.readContent(updateId);
+                                Content updateData = new Content(
+                                    original.getId(),
+                                    original.getSectionId(),
+                                    updateTitle,
+                                    contentUpdate,
+                                    original.getContentStatus(),
+                                    original.getCreatedAt(),
+                                    original.getUpdatedAt()
+                                );
                                 service.updateContent(updateData);
                                 System.out.println("콘텐츠 변경이 완료되었습니다");
                             } catch (NumberFormatException e) {
